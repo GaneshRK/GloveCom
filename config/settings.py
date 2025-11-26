@@ -8,7 +8,7 @@ DEBUG = os.getenv('DJANGO_DEBUG','True') == 'True'
 ALLOWED_HOSTS = ['glovecom.onrender.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
-    "jazzmin",
+    # "jazzmin",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,40 +50,40 @@ DATABASES = {
     }
 }
 
-JAZZMIN_SETTINGS = {
-    "site_title": "Helping Hands Admin",
-    "site_header": "Helping Hands",
-    "site_brand": "HH",  
-    "welcome_sign": "Welcome Founder!",
-    "copyright": "Helping Hands",
-    "search_model": ["translator.Product", "auth.User"],
+# JAZZMIN_SETTINGS = {
+#     "site_title": "Helping Hands Admin",
+#     "site_header": "Helping Hands",
+#     "site_brand": "HH",  
+#     "welcome_sign": "Welcome Founder!",
+#     "copyright": "Helping Hands",
+#     "search_model": ["translator.Product", "auth.User"],
 
-    "show_ui_builder": True,
+#     "show_ui_builder": True,
 
-    "topmenu_links": [
-        {"name": "Home", "url": "/", "permissions": ["auth.view_user"]},
-        {"model": "translator.Product"},
-        {"app": "translator"},
-    ],
+#     "topmenu_links": [
+#         {"name": "Home", "url": "/", "permissions": ["auth.view_user"]},
+#         {"model": "translator.Product"},
+#         {"app": "translator"},
+#     ],
 
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "auth.Group": "fas fa-users",
-        "translator.Product": "fas fa-hand-peace",
-        "translator.Order": "fas fa-shopping-cart",
-        "translator.ContactMessage": "fas fa-envelope",
-    },
+#     "icons": {
+#         "auth": "fas fa-users-cog",
+#         "auth.user": "fas fa-user",
+#         "auth.Group": "fas fa-users",
+#         "translator.Product": "fas fa-hand-peace",
+#         "translator.Order": "fas fa-shopping-cart",
+#         "translator.ContactMessage": "fas fa-envelope",
+#     },
 
-    "show_sidebar": True,
-    "navigation_expanded": True,
-}
-JAZZMIN_UI_TWEAKS = {
-    "theme": "darkly",      # Other themes: flatly, darkly, litera, cosmo, etc.
-    "navbar": "navbar-dark",
-    "sidebar": "sidebar-dark-primary",
-    "footer_fixed": True,
-}
+#     "show_sidebar": True,
+#     "navigation_expanded": True,
+# }
+# JAZZMIN_UI_TWEAKS = {
+#     "theme": "darkly",      # Other themes: flatly, darkly, litera, cosmo, etc.
+#     "navbar": "navbar-dark",
+#     "sidebar": "sidebar-dark-primary",
+#     "footer_fixed": True,
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME':'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
