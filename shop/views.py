@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.conf import settings
 import stripe
 from decimal import Decimal
-stripe.api_key = settings.STRIPE_SECRET_KEY
+# stripe.api_key = settings.STRIPE_SECRET_KEY
 from django.contrib.auth.signals import user_logged_in
 from django.dispatch import receiver
 from .models import Cart, CartItem, Product
@@ -119,8 +119,72 @@ def cart_detail(request):
         'total': total,
     })
 
+# @login_required(login_url='users:login')
+# def checkout(request):
+#     buy_now = request.session.get('buy_now')
+
+#     if buy_now:
+#         product = get_object_or_404(Product, pk=buy_now['product_id'])
+#         quantity = buy_now.get('quantity', 1)
+#         items = [{
+#             'product': product,
+#             'quantity': quantity,
+#             'line_total': product.price * quantity
+#         }]
+#         total = product.price * quantity
+#     else:
+#         items, total = _get_cart_items(request)
+
+#     if request.method == 'POST':
+#         form = OrderCreateForm(request.POST)
+#         if form.is_valid():
+#             order = form.save(commit=False)
+#             order.user = request.user
+#             order.save()
+
+#             for it in items:
+#                 OrderItem.objects.create(
+#                     order=order,
+#                     product=it['product'],
+#                     price=it['product'].price,
+#                     quantity=it['quantity']
+#                 )
+
+#             # --- Stripe Checkout Session ---
+#             line_items = []
+#             for it in items:
+#                 line_items.append({
+#                     'price_data': {
+#                         'currency': 'inr',  # change if needed
+#                         'unit_amount': int(it['product'].price * 100),  # in paise
+#                         'product_data': {
+#                             'name': it['product'].title,
+#                         },
+#                     },
+#                     'quantity': it['quantity'],
+#                 })
+
+#             checkout_session = stripe.checkout.Session.create(
+#                 payment_method_types=['card'],
+#                 line_items=line_items,
+#                 mode='payment',
+#                 success_url=request.build_absolute_uri('/checkout/success/'),
+#                 cancel_url=request.build_absolute_uri('/checkout/cancel/'),
+#             )
+
+#             return redirect(checkout_session.url)
+#     else:
+#         form = OrderCreateForm()
+
+#     return render(request, 'shop/checkout.html', {
+#         'form': form,
+#         'cart_items': items,
+#         'total': total,
+#         'stripe_public_key': settings.STRIPE_PUBLIC_KEY
+#     })
 @login_required(login_url='users:login')
 def checkout(request):
+    # Check if user is buying a single product now
     buy_now = request.session.get('buy_now')
 
     if buy_now:
@@ -133,6 +197,7 @@ def checkout(request):
         }]
         total = product.price * quantity
     else:
+        # Assume _get_cart_items(request) returns (items_list, total_amount)
         items, total = _get_cart_items(request)
 
     if request.method == 'POST':
@@ -142,6 +207,7 @@ def checkout(request):
             order.user = request.user
             order.save()
 
+            # Save each item in the order
             for it in items:
                 OrderItem.objects.create(
                     order=order,
@@ -150,29 +216,12 @@ def checkout(request):
                     quantity=it['quantity']
                 )
 
-            # --- Stripe Checkout Session ---
-            line_items = []
-            for it in items:
-                line_items.append({
-                    'price_data': {
-                        'currency': 'inr',  # change if needed
-                        'unit_amount': int(it['product'].price * 100),  # in paise
-                        'product_data': {
-                            'name': it['product'].title,
-                        },
-                    },
-                    'quantity': it['quantity'],
-                })
+            # Clear buy_now from session if used
+            if 'buy_now' in request.session:
+                del request.session['buy_now']
 
-            checkout_session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
-                line_items=line_items,
-                mode='payment',
-                success_url=request.build_absolute_uri('/checkout/success/'),
-                cancel_url=request.build_absolute_uri('/checkout/cancel/'),
-            )
-
-            return redirect(checkout_session.url)
+            # Redirect to a success page (no payment involved)
+            return redirect('shop:checkout_success')
     else:
         form = OrderCreateForm()
 
@@ -180,9 +229,7 @@ def checkout(request):
         'form': form,
         'cart_items': items,
         'total': total,
-        'stripe_public_key': settings.STRIPE_PUBLIC_KEY
     })
-
 def checkout_success(request):
     session_id = request.GET.get('session_id')
     if session_id:
