@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="py-5 text-center">
+  <h2>Payment canceled</h2>
+  <p class="small">No payment was processed. You may try again.</p>
+  <a class="btn btn-outline-primary" href="{% url 'shop:cart_detail' %}">Back to Cart</a>
+</div>
+{% endblock %}

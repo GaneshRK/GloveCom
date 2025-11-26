@@ -1,0 +1,6 @@
+Django>=5.0,<6.0
+stripe>=5.0
+python-dotenv
+django-crispy-forms
+Pillow
+psycopg2-binary

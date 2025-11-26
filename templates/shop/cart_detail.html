@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+
+<style>
+/* --- DARK THEME --- */
+body {
+    background: #0d0d0d !important;
+    color: #e5e5e5;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Glassmorphism Card */
+.cart-container {
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+}
+
+/* --- FULL TRANSPARENT TABLE FIX --- */
+.table-dark-mode,
+.table-dark-mode * {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Table borders */
+.table-dark-mode {
+    border-collapse: separate !important;
+    border-spacing: 0 8px; /* Optional spacing between rows */
+}
+
+/* Header */
+.table-dark-mode thead tr th {
+    color: #0ddfff !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Table rows */
+.table-dark-mode tbody tr {
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    transition: 0.25s ease;
+}
+
+/* Hover effect */
+.table-dark-mode tbody tr:hover {
+    background: rgba(0, 200, 255, 0.10) !important;
+}
+
+/* Table cell text */
+.table-dark-mode td {
+    color: #e5e5e5 !important;
+    border: none !important;
+}
+
+
+
+
+/* Remove button */
+.remove-btn {
+    color: #ff4b4b;
+    font-weight: 600;
+}
+
+.remove-btn:hover {
+    color: #ff2a2a;
+}
+
+/* Buttons */
+.btn-glow {
+    border: 1px solid #0ddfff;
+    color: #0ddfff;
+    transition: 0.3s;
+}
+
+.btn-glow:hover {
+    background: #0ddfff;
+    color: #000;
+    box-shadow: 0 0 10px #0ddfff;
+}
+
+.btn-checkout {
+    background: linear-gradient(135deg, #0066ff, #00eaff);
+    border: none;
+    color: #000;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-checkout:hover {
+    box-shadow: 0 0 15px #00eaff;
+}
+
+/* Total price */
+.total-box {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #0ddfff;
+}
+</style>
+
+
+<div class="container py-5"style="margin-top:60px;">
+    <div class="cart-container">
+
+        <h1 class="mb-4" style="color:#0ddfff;">🛒 Your Cart</h1>
+
+        {% if cart_items %}
+
+            <div class="table-responsive">
+                <table class="table table-dark-mode table-borderless">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for it in cart_items %}
+                        <tr>
+                            <td>{{ it.product.title }}</td>
+                            <td>₹{{ it.product.price }}</td>
+                            <td>{{ it.quantity }}</td>
+                            <td>₹{{ it.get_line_total }}</td>
+                            <td>
+                                <a href="{% url 'shop:cart_remove' it.product.id %}" class="remove-btn">Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="total-box">Total: ₹{{ total }}</div>
+
+                <div>
+                    <a href="{% url 'shop:product_list' %}" class="btn btn-glow me-2">Continue Shopping</a>
+                    <a href="{% url 'shop:checkout' %}" class="btn btn-checkout">Checkout</a>
+                </div>
+            </div>
+
+        {% else %}
+            <p class="text-muted"style="color: white !important;">Your cart is empty.  
+                <a href="{% url 'shop:product_list' %}" style="color:#0ddfff;">Browse products</a>
+            </p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

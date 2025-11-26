@@ -1,0 +1,12 @@
+from django.contrib import admin
+from .models import ContactMessage, Testimonial
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('name','email','subject','created_at','is_read')
+    list_filter = ('is_read',)
+    search_fields = ('name','email','subject','message')
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = ('name','position','created_at')

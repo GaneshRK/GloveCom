@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #0e0e0e !important;
+        color: #e8e8e8 !important;
+        font-family: "Inter", sans-serif;
+    }
+
+    /* Page Title */
+    .checkout-title {
+        margin-top: 70px;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #fff;
+        text-align: center;
+    }
+
+    /* Main container */
+    .checkout-box {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 18px;
+        padding: 30px;
+        margin-top: 30px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Form labels */
+    .form-label, label {
+        color: #e2e2e2 !important;
+        font-weight: 500;
+    }
+
+    /* Inputs */
+    input, select, textarea {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: #fff !important;
+        border-radius: 8px !important;
+    }
+
+    input:focus {
+        border-color: rgba(255,255,255,0.7)!important;
+        box-shadow: 0 0 8px rgba(255,255,255,0.7);
+    }
+
+    /* Pay button */
+    .btn-pay {
+        width: 100%;
+        padding: 12px;
+        border-radius: 40px;
+        background: linear-gradient(90deg, #9a9898 0%, #b8b6b6 100%);
+        color: #000;
+        border: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+    .btn-pay:hover {
+        opacity: 0.85;
+        transform: translateY(-2px);
+    }
+
+    /* Order summary card */
+    .summary-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 20px;
+        backdrop-filter: blur(8px);
+    }
+
+    .summary-box h4 {
+        color: rgba(255,255,255,0.7);
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .summary-item {
+        background: transparent !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        color: #e8e8e8;
+    }
+
+    .summary-total {
+        background: transparent !important;
+        font-weight: 700;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+    }
+
+    .text-muted {
+        color: #b6b6b6 !important;
+    }
+    input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #060e20 inset !important;
+    box-shadow: 0 0 0 1000px #060e20 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: #fff !important;
+}
+</style>
+
+<h1 class="checkout-title"style="font-size: 2.3rem;
+          font-weight: 800;
+          line-height: 1.2;
+          background: linear-gradient(90deg, #cfe7ff, #73b9ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;">Checkout</h1>
+
+<div class="container">
+    <div class="row justify-content-center">
+
+        <!-- Left Side – Form -->
+        <div class="col-md-6">
+            <div class="checkout-box">
+
+                <h4 style="color:rgba(255,255,255,0.7); font-weight:600; margin-bottom:15px;">Billing Details</h4>
+
+                <form method="post">
+                
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                     <h4>Order Summary</h4>
+
+                    <ul class="list-group small mb-3">
+
+                        {% for it in cart_items %}
+                        <li class="list-group-item summary-item d-flex justify-content-between align-items-center">
+                            <div>{{ it.product.title }} <small class="text-muted">×{{ it.quantity }}</small></div>
+                            <div>₹{{ it.line_total }}</div>
+                        </li>
+                        {% endfor %}
+
+                        <li class="list-group-item summary-total d-flex justify-content-between">
+                            <strong>Total</strong>
+                            <strong>₹{{ total }}</strong>
+                        </li>
+                    </ul>
+                <p class="small text-muted">You will be redirected to Stripe to complete payment.</p>
+                    <!-- <button class="btn-pay">Go To Payment</button> -->
+                    <button formaction="{% url 'shop:temp_payment' %}" class="btn-pay">Go To Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

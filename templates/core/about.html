@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}About — GloveCom{% endblock %}
+
+{% block content %}
+<div class="py-5 text-light">
+
+  <h1 class="fw-bold"style="margin-top:60px;">About GloveCom</h1>
+  <p class="lead" style="opacity: 0.85;">
+    GloveCom began as an academic innovation and grew into a mission-driven assistive technology startup 
+    dedicated to breaking communication barriers for individuals with speech and hearing impairments.
+  </p>
+
+  <!-- About Section -->
+  <div class="mt-5 p-4 rounded" style="background:#151515; border:1px solid #222;">
+    <h3 class="text-primary fw-semibold">What is GloveCom?</h3>
+    <p class="small mb-0">
+      GloveCom is a smart wearable glove that translates hand gestures into text and speech in real time.
+      Using angle-based sensors, an ESP32 microcontroller, and TinyML, the device processes gestures offline 
+      and sends the recognized output wirelessly to a mobile application.
+    </p>
+  </div>
+
+  <!-- Mission Section -->
+  <div class="mt-4 p-4 rounded" style="background:#151515; border:1px solid #222;">
+    <h3 class="text-primary fw-semibold">Our Mission</h3>
+    <p class="small mb-0">
+      To create affordable, portable, and highly accurate assistive tools that empower people to communicate naturally, 
+      regardless of hearing or speech limitations.
+    </p>
+  </div>
+
+  <!-- Milestones -->
+  <h3 class="mt-5 text-primary fw-semibold">Milestones</h3>
+  <ul class="small">
+    <li>Developed fully working prototype with TinyML on ESP32</li>
+    <li>Conducted real-world pilot tests in educational and community environments</li>
+    <li>Created customizable gesture dataset for TinyML model training</li>
+    <li>Designed wireless mobile app for gesture-to-speech output</li>
+  </ul>
+
+  <!-- Team -->
+  <h3 class="mt-4 text-primary fw-semibold">Team</h3>
+  <div class="small">
+      <strong>Founder:</strong> Sipdas K V <br>
+      <strong>Co-Founders:</strong> Ajay R, Dhanushkumar S, Ashiq U, Janavika V, Manal A <br>
+      <strong>Institution:</strong> Coimbatore Institute of Engineering and Technology (2025)
+  </div>
+  <p class="small mt-2">
+    (Team photos, roles, and extended bios can be added here)
+  </p>
+
+  <!-- Vision -->
+  <div class="mt-4 p-4 rounded" style="background:#151515; border:1px solid #222;">
+    <h3 class="text-primary fw-semibold">Future Vision</h3>
+    <p class="small mb-1">
+      We aim to expand GloveCom with:
+    </p>
+    <ul class="small">
+      <li>Multi-language support</li>
+      <li>AI-based sentence prediction</li>
+      <li>Cloud conversation history</li>
+      <li>Flexible, ultralight sensor materials</li>
+    </ul>
+  </div>
+
+</div>
+{% endblock %}

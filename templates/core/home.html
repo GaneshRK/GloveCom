@@ -1,0 +1,461 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Helping Hands{% endblock %}
+{% block content %}
+
+<!-- ===================== DARK THEME STYLES ===================== -->
+<style>
+  body {
+    background: #0f0f0f;
+    color: #ddd;
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* FULLSCREEN HERO */
+.hero-section {
+  height: 100vh;
+  display: flex;
+  align-items: center; /* vertical center */
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0 1rem;
+}
+
+  /* ANIMATION: fade-up */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease;
+  }
+  .fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #cfe7ff, #73b9ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #cfcfcf;
+  max-width: 480px;
+  margin: 0 auto;
+}
+  .btn-primary {
+    background: rgb(173, 173, 173);
+    border: none;
+    font-weight: 600;
+    color: black;
+  }
+  .btn-primary:hover{
+    background:#e6e6e6 !important;
+    color: black;
+  }
+
+  .btn-outline-light {
+    border-color: #777;
+    color: #ccc;
+  }
+  .btn-outline-light:hover {
+    background: #e6e6e6;
+    color: #000;
+  }
+
+.flip-card {
+  background-color: transparent;
+  width: 190px;
+  height: 254px;
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  box-shadow: 0 0 12px rgba(192, 192, 192, 0.8);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid #c0c0c0;
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background: linear-gradient(120deg, rgb(71, 71, 71) 60%, rgb(145, 145, 145) 88%,
+     rgb(173, 173, 173) 40%, rgba(106, 106, 106, 0.603) 48%);
+  color: rgb(255, 255, 255);
+}
+
+.flip-card-back {
+  background: linear-gradient(120deg, rgb(106, 106, 106, 0.603) 30%, rgb(127, 127, 127) 88%,
+     rgb(102, 102, 102) 40%, rgb(71, 71, 71) 78%);
+  color: white;
+  transform: rotateY(180deg);
+}
+/* Dark Mode Section */
+.how-section {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Section Title */
+.how-section .section-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #d4d4d4, #a8a8a8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+/* Steps List */
+.steps-list {
+  counter-reset: step;
+  padding-left: 0;
+  list-style: none;
+}
+
+.step-item {
+  counter-increment: step;
+  position: relative;
+  margin-bottom: 1.8rem;
+  padding: 1rem 1rem 1rem 3rem;
+  background: #1e1e1e;
+  border-left: 4px solid #c0c0c0; /* metallic silver */
+  border-radius: 8px;
+  color: #e0e0e0;
+}
+
+/* Step Number Circle */
+.step-item::before {
+  content: counter(step);
+  position: absolute;
+  left: -1.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #f0f0f0, #a8a8a8); /* metallic silver gradient */
+  color: #121212;
+  font-weight: 700;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+
+/* Video Player */
+.video-player {
+  width: 45%;
+  max-height: 75%;
+  border: 4px solid #c0c0c0;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  object-fit: contain;  /* <— FIX HERE */
+  background-color: black; /* prevents empty white bars */
+}
+
+</style>
+
+<!-- FADE-UP SCROLL SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const fadeElements = document.querySelectorAll('.fade-up');
+
+  function showVisible() {
+    fadeElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        el.classList.add('show');
+      }
+    });
+  }
+
+  showVisible();
+  window.addEventListener('scroll', showVisible);
+});
+</script>
+<section class="hero-section ">
+  <div class="container-fluid">
+    <div class="row align-items-center justify-content-center fade-up">
+      
+      <!-- TEXT COLUMN -->
+      <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+        <h1 class="hero-title">GlowCom</h1>
+        <h5 >
+          Convert custom hand signs into text or natural speech
+        </h5>
+        <h5 >
+          Empowering non-speaking users with fast, accessible communication.
+        </h5>
+
+        <div class="d-flex gap-3 mt-4 justify-content-center justify-content-lg-start flex-wrap">
+          <a href="{% url 'shop:product_list' %}" class="btn btn-primary btn-lg px-4">View Product</a>
+          <a href="#how" class="btn btn-outline-light btn-lg px-4">How it Works</a>
+        </div>
+      </div>
+
+      <!-- IMAGE COLUMN -->
+      <div class="col-lg-6 text-center">
+        <img src="{% static 'images/HH_logo3.png' %}" class="img-fluid" style="max-height: 380px;" alt="Logo">
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ===================== FEATURES ===================== -->
+<hr>
+<section class="py-5">
+  <h2 class="section-title"style="font-size: 2.3rem;
+          font-weight: 800;
+          line-height: 1.2;
+          background: linear-gradient(90deg, #cfe7ff, #73b9ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;">Features</h2>
+  <div class="row g-4 my-4 ">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">Real-Time Gesture-to-Speech Conversion</p>
+          </div>
+          <div class="flip-card-back">
+            <p>GloveCom instantly converts hand gestures into readable text and spoken audio, enabling seamless communication.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">Angle-Based Multi-Finger Sensing</p>
+          </div>
+          <div class="flip-card-back">
+            <p>Five miniature angle/joystick sensors capture precise finger movements for highly accurate gesture detection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">On-Device TinyML Processing (No Internet Required)</p>
+          </div>
+          <div class="flip-card-back">
+            <p>All machine learning inference runs locally on the ESP32 microcontroller—
+✔ No cloud
+✔ No external servers
+✔ Faster response
+✔ More privacy</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">Wireless Connectivity</p>
+          </div>
+          <div class="flip-card-back">
+            <p>Recognized gestures are sent to a smartphone via Bluetooth or Wi-Fi, where the app displays text and plays speech.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">Custom Gesture Training</p>
+          </div>
+          <div class="flip-card-back">
+            <p>Users can train and add their own gestures for personalized communication needs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">Portable and Lightweight Design</p>
+          </div>
+          <div class="flip-card-back">
+            <p>Compact glove hardware with low power consumption makes it easy to carry and use daily.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">Low-Cost and Scalable</p>
+          </div>
+          <div class="flip-card-back">
+            <p>Designed with affordable components, making it accessible for students, families, hospitals, and institutions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">Mobile App Support</p>
+          </div>
+          <div class="flip-card-back">
+            <p>The companion app shows recognized gestures, plays speech output, and supports user configuration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3 my-4">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <p class="h4">Designed for Accessibility</p>
+          </div>
+          <div class="flip-card-back">
+            <p>Created specifically for people with speech and hearing impairments, improving independence and everyday communication.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+<!-- ===================== HOW IT WORKS ===================== -->
+<section id="how" class="py-5">
+  <h2 class="section-title"style="font-size: 2.3rem;
+          font-weight: 800;
+          line-height: 1.2;
+          background: linear-gradient(90deg, #cfe7ff, #73b9ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;">How it Works</h2>
+
+  
+  <div class="row align-items-center my-4">
+    <div class="col-md-6 my-3">
+      <ol class="steps-list">
+        <li class="step-item">It Stores the userdefined hand gesture using your phone</li>
+        <li class="step-item">When You make a hand gesture</li>
+        <li class="step-item">The Sensors send data to the ESP32 chip</li>
+        <li class="step-item">The TinyML model recognizes the gesture</li>
+        <li class="step-item">The glove sends the result to your phone</li>
+        <li class="step-item">The phone displays the text and speaks it out loud</li>
+      </ol>
+    </div>
+
+    <!-- Video -->
+    <div class="col-md-6 text-center mt-4 mt-md-0">
+      <video controls class="video-player">
+        <source src="{% static 'videos/Glovecom1.mp4' %}" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<hr>
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="py-5">
+  <h2 class="section-title"style="font-size: 2.3rem;
+          font-weight: 800;
+          line-height: 1.2;
+          background: linear-gradient(90deg, #cfe7ff, #73b9ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;">Testimonials</h2>
+
+  <div class="row g-3">
+    {% for t in testimonials %}
+      <div class="col-md-4">
+        <div class="testimonial-card p-4 h-100">
+          <p class="fst-italic">“{{ t.text|truncatechars:160 }}”</p>
+
+          <div class="d-flex align-items-center mt-3">
+            {% if t.avatar %}
+              <img src="{{ t.avatar.url }}" class="rounded-circle me-3" width="48" height="48" alt="{{ t.name }}">
+            {% else %}
+              <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3" style="width:48px;height:48px;">
+                {{ t.name|slice:":1" }}
+              </div>
+            {% endif %}
+
+            <div>
+              <div class="fw-bold h5">{{ t.name }}</div>
+              <div class="small text-muted"style="color:white !important;">{{ t.position }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted" style="color: white !important;">No testimonials yet — add one from the admin panel.</p>
+    {% endfor %}
+  </div>
+</section>
+<hr>
+
+<!-- ===================== VISION ===================== -->
+<section class="py-5">
+  <h2 class="section-title"style="font-size: 2.3rem;
+          font-weight: 800;
+          line-height: 1.2;
+          background: linear-gradient(90deg, #cfe7ff, #73b9ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;">Our Vision</h2>
+  <p class="text-muted" style="max-width: 90%; color: white !important;">
+    GloveCom envisions a world where individuals with speech and hearing impairments can communicate effortlessly. 
+    By leveraging wearable sensors, TinyML, and real-time gesture recognition, we aim to make communication seamless, inclusive, and empowering for all.
+  </p>
+</section>
+
+{% endblock %}

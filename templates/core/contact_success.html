@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="py-5 text-center">
+  <h2>Thanks — we received your message!</h2>
+  <p class="small text-muted">We'll respond to your email shortly.</p>
+  <a href="{% url 'core:home' %}" class="btn btn-outline-primary">Back to Home</a>
+</div>
+{% endblock %}

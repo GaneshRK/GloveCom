@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact — HandSign Translator{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #0d0d0d !important;
+        color: #e5e5e5 !important;
+        font-family: "Inter", sans-serif;
+    }
+
+    /* Page Title */
+    .contact-title {
+        margin-top: 70px;
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: #0ddfff;
+        text-align: center;
+        text-shadow: 0 0 10px rgba(0, 220, 255, 0.4);
+    }
+
+    .contact-subtitle {
+        text-align: center;
+        color: #bdbdbd;
+        margin-bottom: 40px;
+    }
+
+    /* Glassmorphism Card */
+    .contact-box {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 30px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 0 28px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Form labels */
+    .form-label, label {
+        color: #dcdcdc !important;
+    }
+
+    /* Inputs */
+    input, select, textarea {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: #fff !important;
+        border-radius: 10px !important;
+        padding: 12px !important;
+    }
+
+    input:focus, textarea:focus {
+        border-color: #0ddfff !important;
+        box-shadow: 0 0 10px rgba(0, 220, 255, 0.5) !important;
+    }
+
+    /* Submit button */
+    .btn-send {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(90deg, #0ddfff, #0088ff);
+        border: none;
+        border-radius: 40px;
+        color: #000;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: 0.3s;
+        box-shadow: 0 0 10px rgba(0, 220, 255, 0.4);
+    }
+
+    .btn-send:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(0, 220, 255, 0.7);
+    }
+
+    /* Contact info card */
+    .info-box {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 25px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        height: 100%;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .info-box h5 {
+        color: #0ddfff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
+    }
+
+    .info-box p {
+        color: #d4d4d4;
+        margin-bottom: 18px;
+    }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #060e20 inset !important;
+    box-shadow: 0 0 0 1000px #060e20 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: #fff !important;
+}
+</style>
+
+<h1 class="contact-title"style="font-size: 2.3rem;
+          font-weight: 800;
+          line-height: 1.2;
+          background: linear-gradient(90deg, #ffffff, #8cc6ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;">Contact Us</h1>
+<p class="contact-subtitle">Send us a message — we'll respond within 48 hours.</p>
+
+<div class="container mb-5">
+    <div class="row gy-4">
+
+        <!-- Contact Form -->
+        <div class="col-md-6">
+            <div class="contact-box">
+
+                <h4 style="color:#0ddfff; font-weight:600; margin-bottom:20px;">
+                    Send a Message
+                </h4>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <button class="btn-send mt-2">Send Message</button>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="col-md-6">
+            <div class="info-box">
+
+                <h5>Headquarters</h5>
+                <p>India • Asia/Kolkata</p>
+
+                <h5>Email</h5>
+                <p>hello@handsigntranslator.com</p>
+
+                <h5>Support Hours</h5>
+                <p>Mon–Fri • 10 AM – 6 PM IST</p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Payment Success{% endblock %}
+{% block content %}
+<div class="py-5 text-center">
+  {% if order %}
+    <h2>Thank you — Order #{{ order.id }} confirmed.</h2>
+    <p class="small">A receipt has been sent to {{ order.email }}.</p>
+    <a class="btn btn-primary" href="{% url 'users:profile' %}">View Orders</a>
+  {% else %}
+    <h2>Payment confirmed</h2>
+    <p class="small">We could not locate the order details. Check your email for confirmation.</p>
+  {% endif %}
+</div>
+{% endblock %}

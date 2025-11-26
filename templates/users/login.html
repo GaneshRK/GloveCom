@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<style>
+body {
+    background-color: #0f0f0f;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+
+.login-card {
+    /*background: linear-gradient(120deg, rgb(71, 71, 71) 60%, rgb(145, 145, 145) 88%, 
+                rgb(173, 173, 173) 40%, rgba(106, 106, 106, 0.603) 48%);*/
+    background-color: #0f0f0f;
+    color: rgb(255, 255, 255);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 400px;
+    margin: 6rem auto;
+    border-top: 2px solid #ffffff;
+    border-bottom: 2px solid #cccccc;
+    box-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.3),
+        0 0 25px rgba(200, 200, 200, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card::before, .login-card::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.login-card::before {
+    top: -25px;
+    left: -25px;
+    background: #a0a0a0;
+    box-shadow: 0 0 40px #a0a0a0;
+    opacity: 0.6;
+}
+
+.login-card::after {
+    bottom: -25px;
+    right: -25px;
+    background: #cfcfcf;
+    box-shadow: 0 0 40px #cfcfcf;
+    opacity: 0.6;
+}
+
+.neon-text {
+    color: #e6e6e6;
+    text-shadow: 0 0 5px #d9d8d8, 0 0 20px rgba(212, 211, 211, 0.3);
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 1.5rem;
+    pointer-events: auto;
+}
+
+.input-box i {
+    position: absolute;
+    top: 50%;
+    left: 0.5rem;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 2.5rem;  /* extra right padding */
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: border-bottom 0.3s;
+    pointer-events: auto;
+}
+
+.input-box input:focus {
+    border-bottom: 2px solid #ffffff;
+}
+
+/* Show Password Icon */
+.toggle-password {
+    position: absolute;
+    margin-left: 90%;     /* moved further right */
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.4rem;     /* ensures only icon is clickable */
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.auth-button {
+    width: 100%;
+    background: linear-gradient(90deg, #9a9898 0%, #b8b6b6 100%);
+    color: #000;
+    border: none;
+    padding: 0.75rem 0;
+    border-radius: 25px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
+
+.auth-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.6);
+}
+
+.neon-link {
+    color: #cccccc;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    margin-top: 1rem;
+}
+
+.neon-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px #ffffff;
+}
+
+/* Autofill Fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px rgb(71,71,71) inset !important;
+    box-shadow: 0 0 0 1000px rgb(71,71,71) inset !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: #fff !important;
+}
+</style>
+
+<!-- Font Awesome (icons) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="login-card">
+    <h2 class="neon-text">Login</h2>
+
+    <form method="post" action="">
+        {% csrf_token %}
+
+        <!-- USERNAME -->
+        <div class="input-box">
+          <i class="fas fa-user"></i>
+          <input type="text" name="username" placeholder="Username" required class="w-full">
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="input-box">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password-field" name="password" placeholder="Password" required class="w-full">
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+        </div>
+
+        <button type="submit" class="auth-button mt-3">Login</button>
+    </form>
+
+    <a href="{% url 'users:register' %}" class="neon-link">Don’t have an account? Register</a>
+</div>
+
+<!-- Show/Hide Password Script -->
+<script>
+document.getElementById("togglePassword").addEventListener("click", function () {
+    const passwordField = document.getElementById("password-field");
+    const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+    passwordField.setAttribute("type", type);
+
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+});
+</script>
+
+{% endblock %}

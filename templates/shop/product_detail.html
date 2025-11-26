@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}{{ product.title }} — HandSign Translator{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #111 !important;
+        color: #e8e8e8 !important;
+        font-family: "Inter", sans-serif;
+    }
+
+    /* MAIN WRAPPER */
+    .product-wrapper {
+        max-width: 1100px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    /* CONTAINERS */
+    .box {
+        background: #181818;
+        border-radius: 16px;
+        border: 1px solid #2b2b2b;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    /* FLEX ROW FOR FIRST CONTAINER */
+    .product-main {
+        display: flex;
+        gap: 25px;
+        align-items: center;
+        flex-wrap: wrap; /* For small screens */
+    }
+
+    /* LEFT IMAGE */
+    .product-img {
+        width: 45%;
+        min-width: 300px;
+    }
+
+    /* RIGHT CONTENT */
+    .product-content {
+        width: 50%;
+        min-width: 280px;
+    }
+
+    .product-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    .product-price {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 10px;
+    }
+
+    .product-desc {
+        font-size: 0.97rem;
+        line-height: 1.6;
+        color: #cfcfcf;
+        margin-bottom: 18px;
+    }
+
+    /* BUTTONS */
+    .btn-cart, .btn-buy {
+        padding: 10px 24px;
+        border-radius: 40px;
+        font-size: 1rem;
+        transition: 0.3s;
+    }
+
+    .btn-cart {
+        border: 2px solid #d4a24c;
+        background: transparent;
+        color: #d4a24c;
+    }
+    .btn-cart:hover {
+        background: #d4a24c;
+        color: #000;
+    }
+
+    .btn-buy {
+        background: linear-gradient(90deg, #9a9898 0%, #b8b6b6 100%);
+        border: none;
+        color: #000;
+        font-weight: 600;
+    }
+    .btn-buy:hover {
+        opacity: 0.65;
+    }
+
+    /* SPEC LIST */
+    .spec-list li {
+        margin-bottom: 8px;
+        color: #dcdcdc;
+    }
+    .spec-list li::marker {
+        color: rgba(255, 255, 255, 0.4);
+    }
+/* Quantity Input Styling */
+.product-qty input,
+#id_quantity,
+input[name="quantity"] {
+    background: transparent !important;
+    border: 2px solid rgba(255, 255, 255, 0.4) !important;
+    color: #e8e8e8 !important;
+    padding: 8px 12px;
+    border-radius: 8px;
+    width: 80px;
+    font-size: 1rem;
+}
+
+.product-qty input:focus,
+#id_quantity:focus,
+input[name="quantity"]:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+.product-img-main img {
+    width: 100%;
+    height: 380px;
+    object-fit: contain;
+    background: #000;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px;
+}
+
+.thumb {
+        width: 70px;
+        height: 70px;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: 0.25s ease;
+        background: #000;
+    }
+
+
+.thumb:hover {
+    border-color: rgba(255, 255, 255, 0.4);;
+    transform: scale(1.07);
+}
+/* PRODUCT SPEC TABLE */
+.spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #151515;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.spec-table tr {
+    border-bottom: 1px solid #2b2b2b;
+}
+
+.spec-table tr:last-child {
+    border-bottom: none;
+}
+
+.spec-table td {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+}
+
+.spec-key {
+    width: 35%;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7); /* gold accent */
+}
+
+.spec-value {
+    color: #e0e0e0;
+}
+
+
+</style>
+
+
+<div class="product-wrapper" style="margin-top: 70px;">
+
+    <div class="box product-main">
+
+        <!-- LEFT SIDE IMAGES -->
+        <div class="product-img">
+
+            <!-- MAIN IMAGE -->
+            <div class="product-img-main mb-3">
+                {% if product.main_image %}
+                    <img id="mainDisplayImage"
+                        src="{{ product.main_image.url }}"
+                        alt="{{ product.title }}">
+                {% elif images %}
+                    <img id="mainDisplayImage"
+                        src="{{ images.0.image.url }}"
+                        alt="{{ images.0.alt_text|default:product.title }}">
+                {% endif %}
+            </div>
+
+            <!-- THUMBNAILS GRID -->
+            <div class="product-img-thumbs d-flex gap-2 flex-wrap">
+                {% if product.main_image %}
+                    <img class="thumb"
+                        src="{{ product.main_image.url }}"
+                        onclick="changeMainImage(this.src)">
+                {% endif %}
+
+                {% for img in images %}
+                    <img class="thumb"
+                        src="{{ img.image.url }}"
+                        onclick="changeMainImage(this.src)">
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <!-- RIGHT SIDE DETAILS -->
+        <div class="product-content">
+            <h2 class="product-title">{{ product.title }}</h2>
+            <div class="product-price">₹{{ product.price }}</div>
+
+            <p class="product-desc">{{ product.description|linebreaks }}</p>
+
+            <form method="post" action="{% url 'shop:cart_add' product.id %}">
+                {% csrf_token %}
+                <label class="fw-bold">{{ form.quantity.label }}</label>
+                {{ form.quantity }}
+                <div class="mt-3 d-flex gap-3">
+                {% if user.is_authenticated %}
+                    <!-- <button class="btn-cart">Add to Cart</button> -->
+
+                    <button type="submit"
+                            formaction="{% url 'shop:buy_now' product.id %}"
+                            class="btn-buy">
+                        Order Now
+                    </button>
+                {% else %}
+                    <!-- <a href="{% url 'users:login' %}"><button class="btn-cart">Add to Cart</button></a> -->
+                    <a href="{% url 'users:login' %}?next={% url 'shop:buy_now' product.id %}">
+                        <button type="button" class="btn-buy">Order Now</button>
+                    </a>
+                {% endif %}
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="box">
+        <h4 class="text-light mb-3">Product Specifications:</h4>
+        <table class="spec-table">
+            <tbody>
+                {% for spec in specifications %}
+                    <tr>
+                        <td class="spec-key">{{ spec.key }}</td>
+                        <td class="spec-value">{{ spec.value }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center text-muted">No specifications available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+function changeMainImage(src) {
+    document.getElementById("mainDisplayImage").src = src;
+}
+</script>
+
+{% endblock %}

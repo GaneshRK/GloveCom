@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+<style>
+  body {
+    background: #0f0f0f;
+    color: #e7e7e7 !important;
+    font-family: "Inter", sans-serif;
+  }
+  /* Remove white background from all form fields */
+  input, textarea, select {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      color: #e7e7e7 !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      backdrop-filter: blur(8px);
+  }
+
+  /* When focused */
+  input:focus, textarea:focus, select:focus {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+      color: #fff !important;
+      border-color: #5c79ff !important; /* Neon border */
+      box-shadow: 0 0 6px #5c79ff55 !important;
+  }
+
+  /* For crispy form labels */
+  label {
+      color: #c7d3ff !important;
+  }
+
+  /* For dark placeholder text */
+  ::placeholder {
+      color: #a8a8a8 !important;
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(14px);
+    border-radius: 14px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: 0.25s ease;
+    height: 100%;
+  }
+
+  .glass-panel:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #9db8ff;
+    margin-bottom: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 6px;
+  }
+
+  /* Avatar section background fix */
+.profile-img-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03); /* soft dark background */
+    padding: 8px;
+}
+
+/* Neon glow ring — updated to match the theme */
+.profile-img-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, #5c79ff, #2dc9ff);
+    -webkit-mask: radial-gradient(circle, rgba(0,0,0,0) 95%, rgba(0,0,0,1) 100%);
+    mask: radial-gradient(circle, rgba(0,0,0,0) 95%, rgba(0,0,0,1) 100%);
+}
+
+/* Real image fits the center properly */
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+span.current { display: none !important; }  /* extra safety */
+
+/* Hide default file input */
+input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+/* Custom file input label as button */
+.custom-file-label {
+    display: inline-block;
+    padding: 8px 18px;
+    color: #fff;
+    background: linear-gradient(135deg, #12172e, #0b2d38);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+    text-align: center;
+    min-width: 120px;
+}
+
+.custom-file-label:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Optional: show selected file name on label */
+input[type="file"]:valid + .custom-file-label {
+    background: linear-gradient(135deg, #0b0f1e, #041217);
+}
+
+  /* Neon Button */
+  .btn-neon {
+    width: 100%;
+    background: linear-gradient(135deg, #e5e5e5, #b5b5b5, #f8f8f8, #9e9e9e);
+    border: none;
+    color: #000000;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px;
+    transition: 0.25s ease;
+  }
+
+  .btn-neon:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  /* Orders list */
+  .order-item {
+    padding: 14px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: 0.25s;
+  }
+
+  .order-item:hover {
+    background: rgba(255,255,255,0.04);
+  }
+
+  .neon-badge {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    border-radius: 10px;
+    background: rgba(90, 120, 255, 0.15);
+    border: 1px solid rgba(90, 120, 255, 0.4);
+    color: #b8caff;
+  }
+</style>
+
+
+<div class="container py-4"style="margin-top: 30px;;">
+
+  <h1 class="text-center mb-4" style="font-size: 2.3rem;
+          font-weight: 800;
+          line-height: 1.2;
+          background: linear-gradient(90deg, #ffffff, #8cc6ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;">Profile Dashboard</h1>
+
+  <div class="row" style="min-height: 500px;">
+
+    <!-- FULL WIDTH PROFILE INFO -->
+    <div class="col-md-9 col-lg-7 mx-auto mb-4">
+      <div class="glass-panel">
+
+        <!-- (your existing Profile Information content stays unchanged) -->
+        <h4 class="section-title">Profile Information</h4>
+
+        <div class="profile-img-wrapper mb-3">
+            {% if user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}" class="profile-img" alt="Profile Avatar">
+            {% else %}
+                <img src="{% static 'images/profile.png' %}" class="profile-img" alt="Default Avatar">
+            {% endif %}
+        </div>
+
+        <h4 class="text-center mb-1">{{ user.username }}</h4>
+        <p class="text-center small text-muted" style="color:white !important;">{{ user.email }}</p>
+
+        <hr class="border-secondary mb-4">
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ uform|crispy }}
+          {{ pform.phone|as_crispy_field }}
+          <div style="display:none;">
+              {{ pform.avatar }}
+          </div>
+          <button type="button" class="btn-neon mt-2" id="change-avatar-btn">Change Avatar</button>
+          <button class="btn-neon mt-2">Save Changes</button>
+        </form>
+
+      </div>
+    </div>
+
+
+    <!-- FULL WIDTH ORDER HISTORY BELOW -->
+    <div class="col-md-9 col-lg-7 mx-auto mb-4">
+      <div class="glass-panel">
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h4 class="section-title mb-0">Order History</h4>
+          {% if orders %}
+            <span class="neon-badge">{{ orders|length }} orders</span>
+          {% endif %}
+        </div>
+
+        {% if orders %}
+          {% for o in orders %}
+            <div class="order-item d-flex justify-content-between">
+
+              <div>
+                <strong style="color:#9db8ff;">Order #{{ o.id }}</strong><br>
+                <small class="text-muted">{{ o.created_at|date:"M d, Y" }}</small>
+              </div>
+
+              <div class="text-end">
+                <div style="color:#73c6ff; font-weight:600;">₹{{ o.get_total }}</div>
+                <div class="small text-info">{{ o.status }}</div>
+              </div>
+
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted text-center py-4">No orders yet.</p>
+        {% endif %}
+
+      </div>
+    </div>
+
+</div>
+
+</div>
+<script>
+const avatarInput = document.getElementById('avatar-input');
+const changeBtn = document.getElementById('change-avatar-btn');
+const avatarPreview = document.getElementById('avatar-preview');
+
+changeBtn.addEventListener('click', () => avatarInput.click());
+
+avatarInput.addEventListener('change', () => {
+    const file = avatarInput.files[0];
+    if(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            avatarPreview.src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+
+
+
+{% endblock %}

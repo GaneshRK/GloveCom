@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Our Product — HandSign Translator{% endblock %}
+
+{% block content %}
+
+<style>
+  body {
+    background-color: #0f0f0f !important;
+    color: #eaeaea !important;
+  }
+
+  h1 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+
+  /* MAIN WRAPPER — Side by Side */
+  .product-container {
+    max-height: 70vh;
+    max-width: 1100px;
+    margin: auto;
+    background: #181818;
+    border-radius: 14px;
+    border: 1px solid #2b2b2b;
+    padding: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: nowrap;        /* <<< IMPORTANT — prevents stacking */
+  }
+
+  /* LEFT: IMAGE */
+  .product-left {
+    width: 50%;               /* Half of container */
+  display: flex;            /* Center image if smaller */
+  align-items: center;
+  justify-content: center;               /* <<< Forces perfect split */
+  }
+
+  .product-left img {
+    width: 100%;
+    height: auto;             /* Preserve aspect ratio */
+  max-height: 70vh;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid #2b2b2b;
+  }
+
+  /* RIGHT: CONTENT */
+  .product-right {
+    width: 50%;               /* <<< Right half of the screen */
+    color: #dedede;
+  }
+
+  .product-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .product-desc {
+    color: #b5b5b5;
+    margin: 15px 0 20px;
+    line-height: 1.6;
+  }
+
+  .price-box {
+    font-size: 2rem;
+    color: linear-gradient(90deg, #9a9898 0%, #b8b6b6 100%);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-buy {
+    padding: 10px 25px;
+    border-radius: 40px;
+    font-size: 1.1rem;
+    transition: 0.25s ease;
+    text-decoration: none;
+    border: 2px solid #b5b5b5;
+    background: transparent;
+    color: white;
+    
+  }
+
+  .btn-buy:hover {
+    background: #b5b5b5;
+    color: #000;
+  }
+
+  /* RESPONSIVE — Only stack on very small screens */
+  @media (max-width: 768px) {
+    .product-container {
+      flex-direction: column;   /* <<< Stacks ONLY on small screens */
+      text-align: center;
+    }
+
+    .product-left,
+    .product-right {
+      width: 100%;
+    }
+  }
+</style>
+
+<h1 style="margin-top: 60px;font-size: 2.3rem;
+          font-weight: 800;
+          line-height: 1.2;
+          background: linear-gradient(90deg, #ffffff, #8cc6ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;">Our Product</h1>
+
+{% for p in products %}
+<div class="product-container"style="margin: 60px;">
+
+  <!-- LEFT: IMAGE -->
+    <div class="product-left">
+      {% if p.main_image %}
+        <img src="{{ p.main_image.url }}" alt="{{ p.title }}">
+      {% elif p.image %}
+        <img src="{{ p.image.url }}" alt="{{ p.title }}">
+      {% else %}
+        <img src="{% static 'default_product.png' %}" alt="{{ p.title }}">
+      {% endif %}
+    </div>
+
+  <!-- RIGHT: CONTENT -->
+  <div class="product-right">
+    <h2 class="product-title">{{ p.title }}</h2>
+
+    <p class="product-desc">{{ p.description|truncatechars:300 }}</p>
+
+    <div class="price-box">₹{{ p.price }}</div>
+
+    <a href="{{ p.get_absolute_url }}" class="btn-buy">View Details</a>
+  </div>
+
+</div>
+{% empty %}
+<p class="empty-text">No product available.</p>
+{% endfor %}
+
+{% endblock %}

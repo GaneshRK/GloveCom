@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Terms & Conditions — GloveCom{% endblock %}
+
+{% block content %}
+<style>
+    .terms-container {
+        background: #121212;
+        padding: 40px;
+        border-radius: 12px;
+        border: 1px solid #1f1f1f;
+        box-shadow: 0 0 22px #00000070;
+        color: #eaeaea;
+        line-height: 1.7;
+        animation: fadeIn 0.6s ease-in-out;
+    }
+    h1, h2 {
+        color: #00bcd4;
+        font-weight: 700;
+        text-shadow: 0 0 8px #00bcd455;
+    }
+    ul { padding-left: 20px; }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="py-5">
+  <div class="terms-container">
+
+    <h1>Terms & Conditions</h1>
+    <p class="small">
+        These Terms & Conditions govern the purchase, use, and operation of the GloveCom wearable device 
+        and its companion mobile application. By using or purchasing GloveCom, you agree to the following terms.
+    </p>
+
+    <!-- Section: Usage -->
+    <h2 class="mt-4">1. Product Usage</h2>
+    <p class="small">
+        GloveCom is an assistive communication device designed to convert hand gestures into text and speech.
+        The device must be used responsibly and only for lawful purposes.
+    </p>
+    <ul class="small">
+        <li>Users must operate the device as instructed in the user guide.</li>
+        <li>GloveCom is not a certified medical device and should not replace professional medical communication tools.</li>
+        <li>Users are responsible for ensuring safe usage of the hardware and sensors.</li>
+    </ul>
+
+    <!-- Section: Purchase & Warranty -->
+    <h2 class="mt-4">2. Purchase, Warranty & Replacement</h2>
+    <ul class="small">
+        <li>Each GloveCom unit comes with a limited warranty for manufacturing defects (duration defined at purchase).</li>
+        <li>Damage caused by misuse, unauthorized repair, or modification is not covered.</li>
+        <li>The wearable glove and sensors must be handled carefully to avoid breakage.</li>
+    </ul>
+
+    <!-- Section: Refund Policy -->
+    <h2 class="mt-4">3. Refund & Return Policy</h2>
+    <p class="small">
+        Refunds and returns are offered according to the policy active at the time of purchase.
+    </p>
+    <ul class="small">
+        <li>Only unused or minimally used devices may qualify for return (inspectable condition).</li>
+        <li>Refunds are processed only after product verification by our support team.</li>
+        <li>Digital products (app features, upgrades) may not be refundable.</li>
+    </ul>
+
+    <!-- Section: Software Licensing -->
+    <h2 class="mt-4">4. Software License & Restrictions</h2>
+    <p class="small">
+        GloveCom firmware, TinyML model, and mobile application are licensed—not sold—to the user.
+        Users may not:
+    </p>
+    <ul class="small">
+        <li>Reverse-engineer, copy, or redistribute the software.</li>
+        <li>Modify the TinyML model or firmware without permission.</li>
+        <li>Use the device for illegal, harmful, or deceptive activities.</li>
+    </ul>
+
+    <!-- Section: App Communication -->
+    <h2 class="mt-4">5. Device & App Connectivity</h2>
+    <ul class="small">
+        <li>The glove communicates with the app via Bluetooth or Wi-Fi.</li>
+        <li>Users are responsible for securing their own mobile device.</li>
+        <li>We are not responsible for issues caused by third-party devices or OS updates.</li>
+    </ul>
+
+    <!-- Section: Liability -->
+    <h2 class="mt-4">6. Limitation of Liability</h2>
+    <p class="small">
+        GloveCom is an assistive communication aid. While we aim for high accuracy, 
+        the system may not recognize every gesture perfectly.
+    </p>
+    <ul class="small">
+        <li>We are not liable for miscommunication resulting from incorrect gesture recognition.</li>
+        <li>We are not responsible for user decisions made based on model output.</li>
+        <li>We are not responsible for any physical injury resulting from misuse of the hardware.</li>
+    </ul>
+
+    <!-- Section: Data -->
+    <h2 class="mt-4">7. User Data & Privacy</h2>
+    <p class="small">
+        Data handling follows our <a href="/privacy" class="text-info">Privacy Policy</a>.  
+        GloveCom does not collect personal data unless the user enables optional features.
+    </p>
+
+    <!-- Section: Updates -->
+    <h2 class="mt-4">8. Updates & Feature Changes</h2>
+    <p class="small">
+        We may update the device firmware, TinyML model, or mobile application to improve performance.  
+        Some features may change, expand, or be discontinued without prior notice.
+    </p>
+
+    <!-- Section: Termination -->
+    <h2 class="mt-4">9. Termination of Use</h2>
+    <p class="small">
+        We reserve the right to revoke access to software updates or services if a user 
+        violates these Terms & Conditions, including misuse of the device.
+    </p>
+
+    <!-- Section: Contact -->
+    <h2 class="mt-4">10. Contact Information</h2>
+    <p class="small mb-0">
+        For inquiries, warranty claims, or support:
+    </p>
+    <p class="small">
+        <strong>Email:</strong> glovecom.support@example.com  
+        <br>(Replace with your official business email)
+    </p>
+
+  </div>
+</div>
+{% endblock %}
