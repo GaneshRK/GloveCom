@@ -1,5 +1,5 @@
+
 Hand Sign Translator - Django project
-===================================
 
 This is a ready-to-run Django 5.x project (SQLite) scaffold for the "Hand Sign Translator" startup.
 It includes:
