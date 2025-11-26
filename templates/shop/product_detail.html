@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block title %}{{ product.title }} — HandSign Translator{% endblock %}
 
@@ -197,7 +198,7 @@ input[name="quantity"]:focus {
 
             <!-- MAIN IMAGE -->
             <div class="product-img-main mb-3">
-                {% if product.main_image %}
+                <!-- {% if product.main_image %}
                     <img id="mainDisplayImage"
                         src="{{ product.main_image.url }}"
                         alt="{{ product.title }}">
@@ -205,12 +206,13 @@ input[name="quantity"]:focus {
                     <img id="mainDisplayImage"
                         src="{{ images.0.image.url }}"
                         alt="{{ images.0.alt_text|default:product.title }}">
-                {% endif %}
+                {% endif %} -->
+                <img src="{% static 'images/img1.png' %}" alt="{{ p.title }}">
             </div>
 
             <!-- THUMBNAILS GRID -->
             <div class="product-img-thumbs d-flex gap-2 flex-wrap">
-                {% if product.main_image %}
+                <!-- {% if product.main_image %}
                     <img class="thumb"
                         src="{{ product.main_image.url }}"
                         onclick="changeMainImage(this.src)">
@@ -220,7 +222,13 @@ input[name="quantity"]:focus {
                     <img class="thumb"
                         src="{{ img.image.url }}"
                         onclick="changeMainImage(this.src)">
-                {% endfor %}
+                {% endfor %} -->
+                <img class="thumb"
+                        src="{% static 'images/img1.png' %}"
+                        onclick="changeMainImage(this.src)">
+                <img class="thumb"
+                        src="{% static 'images/img2.jpg' %}"
+                        onclick="changeMainImage(this.src)">
             </div>
         </div>
 

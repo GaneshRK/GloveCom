@@ -120,13 +120,14 @@
 
   <!-- LEFT: IMAGE -->
     <div class="product-left">
-      {% if p.main_image %}
+      <!-- {% if p.main_image %}
         <img src="{{ p.main_image.url }}" alt="{{ p.title }}">
       {% elif p.image %}
         <img src="{{ p.image.url }}" alt="{{ p.title }}">
       {% else %}
         <img src="{% static 'default_product.png' %}" alt="{{ p.title }}">
-      {% endif %}
+      {% endif %} -->
+      <img src="{% static 'images/img1.png' %}" alt="{{ p.title }}">
     </div>
 
   <!-- RIGHT: CONTENT -->
